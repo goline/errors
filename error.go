@@ -39,7 +39,7 @@ type ErrorTracer interface {
 
 var errStringFormat = "[%s] %s"
 
-func NewError(code string, message string) Error {
+func New(code string, message string) Error {
 	return &FactoryError{code, message, e.Errorf(errStringFormat, code, message)}
 }
 

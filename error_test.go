@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestNewError(t *testing.T) {
-	e := NewError("code", "message")
+func TestNew(t *testing.T) {
+	e := New("code", "message")
 	if e == nil {
 		t.Errorf("Expects e is not nil")
 	}
@@ -49,13 +49,13 @@ func TestFactoryError_Error(t *testing.T) {
 }
 
 func TestFactoryError_TraceString(t *testing.T) {
-	e := NewError("c", "m")
+	e := New("c", "m")
 	if e.TraceString() == "" {
 		t.Error("Expects e is not empty")
 	}
 }
 
 func TestFactoryError_Trace(t *testing.T) {
-	e := NewError("c", "m")
+	e := New("c", "m")
 	e.Trace()
 }
