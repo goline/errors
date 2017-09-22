@@ -47,6 +47,15 @@ type ErrorHttpAware interface {
 	WithStatus(status int) ErrorHttpAware
 }
 
+type ErrorLeveller interface {
+	// Level returns error's level
+	// it is useful for debugging
+	Level() string
+
+	// WithLevel sets error's level
+	WithLevel(level string) ErrorLeveller
+}
+
 var errStringFormat = "[%s] %s"
 
 func New(code string, message string) Error {
@@ -55,6 +64,7 @@ func New(code string, message string) Error {
 		message: message,
 		stack:   e.Errorf(errStringFormat, code, message),
 		status:  http.StatusOK,
+		level:   LEVEL_ERROR,
 	}
 }
 
@@ -63,6 +73,7 @@ type FactoryError struct {
 	message string
 	stack   error
 	status  int
+	level   string
 }
 
 func (e *FactoryError) Code() string {
@@ -97,6 +108,15 @@ func (e *FactoryError) Status() int {
 
 func (e *FactoryError) WithStatus(status int) ErrorHttpAware {
 	e.status = status
+	return e
+}
+
+func (e *FactoryError) Level() string {
+	return e.level
+}
+
+func (e *FactoryError) WithLevel(level string) ErrorLeveller {
+	e.level = level
 	return e
 }
 
