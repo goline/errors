@@ -54,7 +54,7 @@ func New(code string, message string) Error {
 		code:    code,
 		message: message,
 		stack:   e.Errorf(errStringFormat, code, message),
-		status:  http.StatusInternalServerError,
+		status:  http.StatusOK,
 	}
 }
 
