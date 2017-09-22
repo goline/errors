@@ -20,7 +20,7 @@ type ErrorCodeAware interface {
 	Code() string
 
 	// WithCode sets error's code
-	WithCode(code string) ErrorCodeAware
+	WithCode(code string) Error
 }
 
 type ErrorMessageAware interface {
@@ -28,7 +28,7 @@ type ErrorMessageAware interface {
 	Message() string
 
 	// WithMessage sets error's message
-	WithMessage(message string) ErrorMessageAware
+	WithMessage(message string) Error
 }
 
 type ErrorTracer interface {
@@ -44,7 +44,7 @@ type ErrorHttpAware interface {
 	Status() int
 
 	// WithStatus sets HTTP Status code
-	WithStatus(status int) ErrorHttpAware
+	WithStatus(status int) Error
 }
 
 type ErrorLeveller interface {
@@ -53,7 +53,7 @@ type ErrorLeveller interface {
 	Level() string
 
 	// WithLevel sets error's level
-	WithLevel(level string) ErrorLeveller
+	WithLevel(level string) Error
 }
 
 var errStringFormat = "[%s] %s"
@@ -80,7 +80,7 @@ func (e *FactoryError) Code() string {
 	return e.code
 }
 
-func (e *FactoryError) WithCode(code string) ErrorCodeAware {
+func (e *FactoryError) WithCode(code string) Error {
 	e.code = code
 	return e
 }
@@ -89,7 +89,7 @@ func (e *FactoryError) Message() string {
 	return e.message
 }
 
-func (e *FactoryError) WithMessage(message string) ErrorMessageAware {
+func (e *FactoryError) WithMessage(message string) Error {
 	e.message = message
 	return e
 }
@@ -106,7 +106,7 @@ func (e *FactoryError) Status() int {
 	return e.status
 }
 
-func (e *FactoryError) WithStatus(status int) ErrorHttpAware {
+func (e *FactoryError) WithStatus(status int) Error {
 	e.status = status
 	return e
 }
@@ -115,7 +115,7 @@ func (e *FactoryError) Level() string {
 	return e.level
 }
 
-func (e *FactoryError) WithLevel(level string) ErrorLeveller {
+func (e *FactoryError) WithLevel(level string) Error {
 	e.level = level
 	return e
 }
