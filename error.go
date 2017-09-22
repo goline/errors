@@ -3,12 +3,14 @@ package errors
 import (
 	"fmt"
 	e "github.com/pkg/errors"
+	"net/http"
 )
 
 // Error represents for a common error
 type Error interface {
-	ErrorCodeAware
 	ErrorMessageAware
+	ErrorHttpAware
+	ErrorCodeAware
 	ErrorTracer
 	error
 }
@@ -37,16 +39,30 @@ type ErrorTracer interface {
 	TraceString() string
 }
 
+type ErrorHttpAware interface {
+	// Status returns HTTP Status code
+	Status() int
+
+	// WithStatus sets HTTP Status code
+	WithStatus(status int) ErrorHttpAware
+}
+
 var errStringFormat = "[%s] %s"
 
 func New(code string, message string) Error {
-	return &FactoryError{code, message, e.Errorf(errStringFormat, code, message)}
+	return &FactoryError{
+		code:    code,
+		message: message,
+		stack:   e.Errorf(errStringFormat, code, message),
+		status:  http.StatusInternalServerError,
+	}
 }
 
 type FactoryError struct {
 	code    string
 	message string
 	stack   error
+	status  int
 }
 
 func (e *FactoryError) Code() string {
@@ -73,6 +89,15 @@ func (e *FactoryError) Trace() {
 
 func (e *FactoryError) TraceString() string {
 	return fmt.Sprintf("%+v", e.stack)
+}
+
+func (e *FactoryError) Status() int {
+	return e.status
+}
+
+func (e *FactoryError) WithStatus(status int) ErrorHttpAware {
+	e.status = status
+	return e
 }
 
 // Error implements error interface
