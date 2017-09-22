@@ -42,7 +42,7 @@ func TestFactoryError_WithMessage(t *testing.T) {
 }
 
 func TestFactoryError_Error(t *testing.T) {
-	e := &FactoryError{"code", "message", nil}
+	e := &FactoryError{code: "code", message: "message", stack: nil}
 	if e.Error() != "[code] message" {
 		t.Errorf("Expects %s. Got %s", "[code] message", e.Error())
 	}
