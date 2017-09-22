@@ -2,8 +2,9 @@ package errors
 
 import (
 	"fmt"
-	e "github.com/pkg/errors"
 	"net/http"
+
+	e "github.com/pkg/errors"
 )
 
 // Error represents for a common error
@@ -11,6 +12,7 @@ type Error interface {
 	ErrorMessageAware
 	ErrorHttpAware
 	ErrorCodeAware
+	ErrorLeveller
 	ErrorTracer
 	error
 }
