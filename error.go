@@ -12,6 +12,7 @@ type Error interface {
 	ErrorMessageAware
 	ErrorHttpAware
 	ErrorCodeAware
+	ErrorDebugger
 	ErrorLeveller
 	ErrorTracer
 	error
@@ -58,6 +59,15 @@ type ErrorLeveller interface {
 	WithLevel(level string) Error
 }
 
+type ErrorDebugger interface {
+	// Debug returns message for debugging
+	Debug() string
+
+	// WithDebug sets debug's message
+	// It is useful to hide system debug message from response
+	WithDebug(debug string) Error
+}
+
 var errStringFormat = "[%s] %s"
 
 func New(code string, message string) Error {
@@ -76,6 +86,7 @@ type FactoryError struct {
 	stack   error
 	status  int
 	level   string
+	debug   string
 }
 
 func (e *FactoryError) Code() string {
@@ -125,4 +136,13 @@ func (e *FactoryError) WithLevel(level string) Error {
 // Error implements error interface
 func (e *FactoryError) Error() string {
 	return fmt.Sprintf(errStringFormat, e.code, e.message)
+}
+
+func (e *FactoryError) Debug() string {
+	return e.debug
+}
+
+func (e *FactoryError) WithDebug(debug string) Error {
+	e.debug = debug
+	return e
 }

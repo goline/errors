@@ -59,3 +59,18 @@ func TestFactoryError_Trace(t *testing.T) {
 	e := New("c", "m")
 	e.Trace()
 }
+
+func TestFactoryError_Debug(t *testing.T) {
+	e := &FactoryError{debug: "this_is_code"}
+	if e.Debug() != "this_is_code" {
+		t.Errorf("Expects %s. Got %s", e.debug, e.Debug())
+	}
+}
+
+func TestFactoryError_WithDebug(t *testing.T) {
+	e := &FactoryError{}
+	e.WithDebug("a_code")
+	if e.debug != "a_code" {
+		t.Errorf("Expects %s. Got %s", "a_code", e.debug)
+	}
+}
